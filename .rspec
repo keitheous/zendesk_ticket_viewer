@@ -1,0 +1,4 @@
+--format documentation
+--format Rainbow
+--color
+--require spec_helper
