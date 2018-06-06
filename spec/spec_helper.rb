@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "zendesk_ticket_viewer"
+require 'zendesk_ticket_viewer/ticket.rb'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
