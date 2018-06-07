@@ -1,3 +1,5 @@
+require 'httparty'
+
 class ZendeskApi
   attr_reader :basic_auth
 
