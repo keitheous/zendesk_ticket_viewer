@@ -9,27 +9,30 @@ class ApiServiceController
   end
 
   def fetch_tickets
-    response = api_call
+    initial_response = obtain_tickets_from_response
 
-    ticket_master.collect_tickets(response['tickets'])
-
-    total_pages = response_pages_for_tickets(response['count'])
+    total_pages = response_pages_for_tickets(initial_response['count'])
 
     if total_pages > 1
-      (2..total_pages).each do |page|
-        response = api_call(page)
-        ticket_master.collect_tickets(response['tickets'])
-      end
+      (2..total_pages).each { |page| obtain_tickets_from_response(page) }
     end
   end
 
   private
 
+  def obtain_tickets_from_response(page = nil)
+    response = call_api(page)
+
+    ticket_master.collect_tickets(response['tickets'])
+
+    response
+  end
+
   def response_pages_for_tickets(response_count)
     (response_count / 100.00).ceil
   end
 
-  def api_call(page = nil)
+  def call_api(page)
     api.get_request(:page => page)
   end
 end
