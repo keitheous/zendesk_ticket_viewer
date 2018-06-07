@@ -11,11 +11,9 @@ class ApiServiceController
   def fetch_tickets
     initial_response = obtain_tickets_from_response
 
-    total_pages = response_pages_for_tickets(initial_response['count'])
+    total_pages = response_pages(initial_response['count'])
 
-    if total_pages > 1
-      (2..total_pages).each { |page| obtain_tickets_from_response(page) }
-    end
+    (2..total_pages).each { |page| obtain_tickets_from_response(page) } if total_pages > 1
   end
 
   private
@@ -28,8 +26,8 @@ class ApiServiceController
     response
   end
 
-  def response_pages_for_tickets(response_count)
-    (response_count / 100.00).ceil
+  def response_pages(response_count)
+    (response_count / 100.00).ceil # maximum 100 tickets stored per page
   end
 
   def call_api(page)
