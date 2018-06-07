@@ -12,23 +12,23 @@ RSpec.describe Ticket do
   }
 
   describe '.initialize' do
-    it 'has an ID' do
+    it 'sets an ID' do
       expect(ticket.id).to eq(12)
     end
 
-    it 'has a subject' do
+    it 'sets a subject' do
       expect(ticket.subject).to eq('Cat in a Tree')
     end
 
-    it 'has a description' do
+    it 'sets a description' do
       expect(ticket.description).to eq('Help! my Cat is stuck in a tree')
     end
 
-    it 'has a created_at date' do
+    it 'sets a created_at date' do
       expect(ticket.created_at).to eq('2018-06-05T03:58:57Z')
     end
 
-    it 'has a submitter' do
+    it 'sets a submitter' do
       expect(ticket.submitter).to eq(123456)
     end
   end
