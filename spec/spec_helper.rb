@@ -1,4 +1,5 @@
 require 'json'
+require 'httparty'
 require "bundler/setup"
 require "zendesk_ticket_viewer"
 
