@@ -1,9 +1,10 @@
+require 'json'
 require "bundler/setup"
 require "zendesk_ticket_viewer"
-require 'zendesk_ticket_viewer/ticket.rb'
+
 require 'zendesk_ticket_viewer/ticket_master.rb'
-require 'json'
-#
+require 'zendesk_ticket_viewer/zendesk_api.rb'
+
 # RSpec.configure do |config|
 #   # Enable flags like --only-failures and --next-failure
 #   config.example_status_persistence_file_path = ".rspec_status"
