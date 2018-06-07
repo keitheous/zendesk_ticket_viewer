@@ -5,6 +5,7 @@ require "zendesk_ticket_viewer"
 
 require 'zendesk_ticket_viewer/ticket_master.rb'
 require 'zendesk_ticket_viewer/zendesk_api.rb'
+require 'zendesk_ticket_viewer/api_service_controller.rb'
 
 # RSpec.configure do |config|
 #   # Enable flags like --only-failures and --next-failure
