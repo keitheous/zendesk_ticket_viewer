@@ -8,7 +8,7 @@ class ZendeskApi
   def get_request(url_args = {})
     HTTParty.get(
       url_builder(url_args[:url], url_args[:page]),
-      :basic_auth => basic_auth,
+      :basic_auth => basic_auth
     )
   end
 

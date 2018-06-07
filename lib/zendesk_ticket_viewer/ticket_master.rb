@@ -14,7 +14,7 @@ class TicketMaster
         api_ticket['subject'],
         api_ticket['description'],
         api_ticket['created_at'],
-        api_ticket['submitter'],
+        api_ticket['submitter']
       )
     end
   end

@@ -7,7 +7,7 @@ RSpec.describe Ticket do
       'Cat in a Tree',
       'Help! my Cat is stuck in a tree',
       '2018-06-05T03:58:57Z',
-      123456,
+      123456
     )
   }
 

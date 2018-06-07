@@ -9,7 +9,7 @@ RSpec.describe ZendeskApi do
         expect(default_zendesk_api.basic_auth)
           .to eq(
             :username => "keithchongwy@gmail.com",
-            :password => 'spiceupyourlife',
+            :password => 'spiceupyourlife'
           )
       end
     end
@@ -30,7 +30,7 @@ RSpec.describe ZendeskApi do
 
       it 'returns response with next_page url' do
         expect(zendesk_response['next_page']).to eq(
-          'https://keitheous.zendesk.com/api/v2/tickets.json?page=2',
+          'https://keitheous.zendesk.com/api/v2/tickets.json?page=2'
         )
       end
 
