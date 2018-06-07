@@ -1,11 +1,11 @@
 class Ticket
   attr_reader :id, :subject, :description, :created_at, :submitter
 
-  def initialize(id, subject, description, created_at, submitter)
-    @id = id
-    @subject = subject
-    @description = description
-    @created_at = created_at
-    @submitter = submitter
+  def initialize(args)
+    @id          = args[:id]
+    @subject     = args[:subject]
+    @description = args[:description]
+    @created_at  = args[:created_at]
+    @submitter   = args[:submitter]
   end
 end

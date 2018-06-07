@@ -1,15 +1,17 @@
 require 'spec_helper'
 
 RSpec.describe Ticket do
-  let(:ticket) {
-    Ticket.new(
-      12,
-      'Cat in a Tree',
-      'Help! my Cat is stuck in a tree',
-      '2018-06-05T03:58:57Z',
-      123456
-    )
-  }
+  let(:ticket_args) { {} }
+
+  before do
+    ticket_args[:id]          = 12
+    ticket_args[:subject]     = 'Cat in a Tree'
+    ticket_args[:description] = 'Help! my Cat is stuck in a tree'
+    ticket_args[:created_at]  = '2018-06-05T03:58:57Z'
+    ticket_args[:submitter]   = 123456
+  end
+
+  let(:ticket) {Ticket.new(ticket_args)}
 
   describe '.initialize' do
     it 'sets an ID' do
