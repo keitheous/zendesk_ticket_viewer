@@ -3,7 +3,7 @@ require_relative 'ticket_master'
 
 class ApiServiceController
   attr_reader :ticket_master, :api
-  def initialize(ticket_master, api)
+  def initialize(ticket_master = TicketMaster.new, api = ZendeskApi.new)
     @ticket_master = ticket_master
     @api = api
   end
@@ -14,6 +14,8 @@ class ApiServiceController
     total_pages = response_pages(initial_response['count'])
 
     (2..total_pages).each { |page| obtain_tickets_from_response(page) } if total_pages > 1
+
+    self
   end
 
   private
