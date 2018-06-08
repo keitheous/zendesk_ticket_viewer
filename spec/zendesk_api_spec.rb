@@ -15,11 +15,11 @@ RSpec.describe ZendeskApi do
     end
 
     context 'using custom authentication as param' do
-      let(:username_password)  { { :username => "donkeh@gmail.com", :password => 'kong' } }
-      let(:custom_zendesk_api) { ZendeskApi.new(username_password) }
+      let(:custom_auth) { { :username => "donkeh@gmail.com", :password => 'kong' } }
+      let(:custom_zendesk_api) { ZendeskApi.new(custom_auth) }
 
       it 'returns basic_auth attribute with custom authentication' do
-        expect(custom_zendesk_api.basic_auth).to eq(username_password)
+        expect(custom_zendesk_api.basic_auth).to eq(custom_auth)
       end
     end
   end

@@ -11,7 +11,7 @@ RSpec.describe Ticket do
     ticket_args[:submitter]   = 123456
   end
 
-  let(:ticket) {Ticket.new(ticket_args)}
+  let(:ticket) { Ticket.new(ticket_args) }
 
   describe '.initialize' do
     it 'sets an ID' do
