@@ -3,8 +3,8 @@ require 'httparty'
 class ZendeskApi
   attr_reader :basic_auth
 
-  def initialize(auth_args = nil)
-    @basic_auth = authentication(auth_args)
+  def initialize(authentication = default_basic_auth)
+    @basic_auth = authentication
   end
 
   def get_request(url_args = {})
@@ -15,10 +15,6 @@ class ZendeskApi
   end
 
   private
-
-  def authentication(auth_args)
-    auth_args || default_basic_auth
-  end
 
   def default_basic_auth
     { :username => "keithchongwy@gmail.com", :password => 'spiceupyourlife' }
