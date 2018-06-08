@@ -3,8 +3,8 @@ require_relative 'ticket'
 class TicketMaster
   attr_reader :tickets
 
-  def initialize
-    @tickets = {}
+  def initialize(tickets = {})
+    @tickets = tickets
   end
 
   def collect_tickets(api_tickets)
