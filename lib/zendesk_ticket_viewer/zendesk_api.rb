@@ -8,10 +8,7 @@ class ZendeskApi
   end
 
   def get_request(url_args = {})
-    HTTParty.get(
-      url_builder(url_args[:url], url_args[:page]),
-      :basic_auth => basic_auth
-    )
+    http_connection(url_builder(url_args[:url], url_args[:page]))
   end
 
   private
@@ -32,5 +29,24 @@ class ZendeskApi
 
   def url_concat(page_num)
     "?page=#{page_num}"
+  end
+
+  def http_connection(url)
+    HTTParty.get(url, :basic_auth => basic_auth)
+  rescue *exceptions_list => e
+    raise e.message
+  end
+
+  def exceptions_list
+    [
+      Net::HTTPBadResponse,
+      Net::HTTPHeaderSyntaxError,
+      Net::ProtocolError,
+      Errno::ECONNRESET,
+      Errno::EINVAL,
+      Timeout::Error,
+      EOFError,
+      SocketError
+    ]
   end
 end
