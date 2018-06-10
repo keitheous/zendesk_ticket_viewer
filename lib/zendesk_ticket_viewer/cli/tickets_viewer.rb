@@ -1,5 +1,3 @@
-require_relative '../api_service_controller'
-
 class TicketsViewer
   TABLE_HEADER = { 'ID' => 6, 'Subject' => 40, 'Submitter' => 13 }.freeze
   attr_reader :page_sections, :table_header
@@ -8,22 +6,29 @@ class TicketsViewer
     @page_sections = tickets.each_slice(page_size).to_a
   end
 
-  def print_header
-    horizontal_line
-    header_text
-    horizontal_line
-  end
+  def display_page(input_page)
+    page_section = input_page - 1
 
-  def display_page(page = 0)
     print_header
-    ticket_rows(page)
-    horizontal_line
+    ticket_rows(page_section)
+    page_indicator(input_page)
   end
 
   private
 
   def default_page_size(custom_page_size = nil)
     custom_page_size || 25
+  end
+
+  def print_header
+    horizontal_line
+    header_text
+    horizontal_line
+  end
+
+  def page_indicator(page)
+    horizontal_line
+    puts "Page: #{page} of #{page_sections.size}"
   end
 
   def horizontal_line
@@ -61,23 +66,3 @@ class TicketsViewer
     end
   end
 end
-# 
-# TicketsViewer.new(
-#   ApiServiceController.new.fetch_tickets.ticket_master.tickets.values
-# ).display_page
-# #
-# TicketsViewer.new(
-#   ApiServiceController.new.fetch_tickets.ticket_master.tickets.values
-# ).display_page(1)
-#
-# TicketsViewer.new(
-#   ApiServiceController.new.fetch_tickets.ticket_master.tickets.values
-# ).display_page(2)
-#
-# TicketsViewer.new
-#   ApiServiceController.new.fetch_tickets.ticket_master.tickets.values
-# ).display_page(3)
-#
-# TicketsViewer.new(
-#   ApiServiceController.new.fetch_tickets.ticket_master.tickets.values
-# ).display_page(4)
