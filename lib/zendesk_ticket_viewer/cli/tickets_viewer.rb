@@ -1,12 +1,11 @@
-# require_relative '../api_service_controller'
+require_relative '../api_service_controller'
 
 class TicketsViewer
   TABLE_HEADER = { 'ID' => 6, 'Subject' => 40, 'Submitter' => 13 }.freeze
-  PAGE_SIZE    = 25
-  attr_reader :page_sections
+  attr_reader :page_sections, :table_header
 
-  def initialize(tickets)
-    @page_sections = tickets.each_slice(PAGE_SIZE).to_a
+  def initialize(tickets, page_size = 25)
+    @page_sections = tickets.each_slice(page_size).to_a
   end
 
   def print_header
@@ -23,6 +22,10 @@ class TicketsViewer
 
   private
 
+  def default_page_size(custom_page_size = nil)
+    custom_page_size || 25
+  end
+
   def horizontal_line
     puts "+======+========================================+=============+"
   end
@@ -36,13 +39,14 @@ class TicketsViewer
   end
 
   def ticket_rows(page)
-    page_sections[page].each do |ticket|
-      row_texts = []
-      row_texts << word_wrap(ticket.id, TABLE_HEADER['ID'])
-      row_texts << word_wrap(ticket.subject, TABLE_HEADER['Subject'])
-      row_texts << word_wrap(ticket.submitter, TABLE_HEADER['Submitter'])
-      print_row(row_texts)
-    end
+    page_sections[page].each { |ticket| print_row(row_builder(ticket)) }
+  end
+
+  def row_builder(ticket)
+    row_texts = []
+    row_texts << word_wrap(ticket.id, TABLE_HEADER['ID'])
+    row_texts << word_wrap(ticket.subject, TABLE_HEADER['Subject'])
+    row_texts << word_wrap(ticket.submitter, TABLE_HEADER['Submitter'])
   end
 
   def print_row(row)
@@ -57,11 +61,11 @@ class TicketsViewer
     end
   end
 end
-
+# 
 # TicketsViewer.new(
 #   ApiServiceController.new.fetch_tickets.ticket_master.tickets.values
 # ).display_page
-#
+# #
 # TicketsViewer.new(
 #   ApiServiceController.new.fetch_tickets.ticket_master.tickets.values
 # ).display_page(1)
