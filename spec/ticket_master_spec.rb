@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe TicketMaster do
-  let(:tickets_response_json) { File.read("spec/mock_data/sample_ticket_response.json") }
+  let(:tickets_response_json) { File.read("spec/fixtures/sample_ticket_response.json") }
   let(:tickets_response)      { JSON.parse(tickets_response_json) }
 
   let(:ticket_master)         { TicketMaster.new }
