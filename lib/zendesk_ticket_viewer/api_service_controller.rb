@@ -15,7 +15,7 @@ class ApiServiceController
 
     (2..total_pages).each { |page| obtain_tickets_from_response(page) } if total_pages > 1
 
-    self
+    ticket_master.tickets
   end
 
   private
