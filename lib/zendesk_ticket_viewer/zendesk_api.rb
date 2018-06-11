@@ -34,7 +34,7 @@ class ZendeskApi
   def http_connection(url)
     HTTParty.get(url, :basic_auth => basic_auth)
   rescue *exceptions_list => e
-    raise e.message
+    puts "Error: " + e.message
   end
 
   def exceptions_list
