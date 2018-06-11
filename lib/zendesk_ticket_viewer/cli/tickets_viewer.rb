@@ -1,6 +1,6 @@
 class TicketsViewer
-  TABLE_HEADER = { 'ID' => 6, 'Subject' => 40, 'Submitter' => 13 }.freeze
-  attr_reader :page_sections, :table_header
+  TABLE_HEADER = { 'ID' => 6, 'Subject' => 41, 'Submitter' => 12 }.freeze
+  attr_reader :page_sections
 
   def initialize(tickets, page_size = 25)
     @page_sections = tickets.each_slice(page_size).to_a
@@ -10,25 +10,16 @@ class TicketsViewer
     page_section = input_page - 1
 
     print_header
-    ticket_rows(page_section)
-    page_indicator(input_page)
+    print_rows(page_section)
+    print_footer(input_page)
   end
 
   private
-
-  def default_page_size(custom_page_size = nil)
-    custom_page_size || 25
-  end
 
   def print_header
     horizontal_line
     header_text
     horizontal_line
-  end
-
-  def page_indicator(page)
-    horizontal_line
-    puts "Page: #{page} of #{page_sections.size}"
   end
 
   def horizontal_line
@@ -43,7 +34,15 @@ class TicketsViewer
     print_row(header_texts)
   end
 
-  def ticket_rows(page)
+  def word_wrap(word, space)
+    if word.to_s.length > space
+      word.to_s.slice(0, space - 2) + ".."
+    else
+      word.to_s.ljust(space)
+    end
+  end
+
+  def print_rows(page)
     page_sections[page].each { |ticket| print_row(row_builder(ticket)) }
   end
 
@@ -58,11 +57,12 @@ class TicketsViewer
     puts '|' + row.join('|') + '|'
   end
 
-  def word_wrap(word, space)
-    if word.to_s.length >= space
-      word.to_s.slice(0, space - 3) + "..."
-    else
-      word.to_s.ljust(space)
-    end
+  def print_footer(current_page)
+    horizontal_line
+    page_indicator(current_page)
+  end
+
+  def page_indicator(page)
+    puts "Page: #{page} of #{page_sections.size}"
   end
 end

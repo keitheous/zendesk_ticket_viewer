@@ -14,7 +14,7 @@ class TicketMaster
         :subject     => api_ticket['subject'],
         :description => api_ticket['description'],
         :created_at  => api_ticket['created_at'],
-        :submitter   => api_ticket['submitter']
+        :submitter   => api_ticket['submitter_id']
       )
     end
   end
