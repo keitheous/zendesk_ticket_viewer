@@ -3,7 +3,8 @@ require 'httparty'
 require "bundler/setup"
 require "zendesk_ticket_viewer"
 
-require 'zendesk_ticket_viewer/api_service_controller.rb'
+require "zendesk_ticket_viewer/cli/tickets_viewer"
+require 'zendesk_ticket_viewer/api_service_controller'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
