@@ -8,4 +8,14 @@ class Ticket
     @created_at  = args[:created_at]
     @submitter   = args[:submitter]
   end
+
+  def to_s
+    puts [
+      "Ticket #{id}",
+      "Subject    : #{subject}",
+      "Submitter  : #{submitter}",
+      "Created    : #{created_at}",
+      "Description:\n#{description}"
+    ].unshift("\n").join("\n")
+  end
 end

@@ -90,15 +90,7 @@ class Cli
   end
 
   def display_ticket(ticket_id)
-    ticket = tickets[ticket_id]
-
-    puts [
-      "Ticket #{ticket.id} / #{tickets.size}",
-      "Subject    : #{ticket.subject}",
-      "Submitter  : #{ticket.submitter}",
-      "Created    : #{ticket.created_at}",
-      "Description:\n#{ticket.description}"
-    ].unshift("\n").join("\n")
+    tickets[ticket_id].to_s
   end
 
   def exit_application
