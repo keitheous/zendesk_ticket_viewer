@@ -7,8 +7,15 @@ task "run" do
   require 'zendesk_ticket_viewer/api_service_controller'
   require 'zendesk_ticket_viewer/cli/cli'
 
+  puts "Welcome To Zendesk Ticket Viewer"
+
   puts "Requesting tickets from Zendesk API ..."
-  tickets = ApiServiceController.new.fetch_tickets
+  zendesk_api = ZendeskApi.new
+  api_service = ApiServiceController.new(zendesk_api).fetch_tickets
+
+  next if api_service.nil?
+
+  tickets = api_service.ticket_master.tickets
 
   puts "Loading tickets into CLI ..."
   Cli.new(tickets).run

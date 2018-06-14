@@ -35,6 +35,7 @@ class ZendeskApi
     HTTParty.get(url, :basic_auth => basic_auth)
   rescue *exceptions_list => e
     puts "Error: " + e.message
+    puts "This service is temporarily unavailable. Please try again later.."
   end
 
   def exceptions_list

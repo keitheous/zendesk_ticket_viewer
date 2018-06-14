@@ -1,38 +1,43 @@
 require_relative 'zendesk_api'
 require_relative 'ticket_master'
+require 'pry'
 
 class ApiServiceController
-  attr_reader :ticket_master, :api
-  def initialize(ticket_master = TicketMaster.new, api = ZendeskApi.new)
+  attr_reader :ticket_master, :zendesk_api
+  def initialize(zendesk_api = ZendeskApi.new, ticket_master = TicketMaster.new)
+    @zendesk_api = zendesk_api
     @ticket_master = ticket_master
-    @api = api
   end
 
   def fetch_tickets
-    initial_response = obtain_tickets_from_response
+    initial_response = api_call
+
+    return nil if initial_response.nil?
+
+    collect_tickets(initial_response['tickets'])
 
     total_pages = response_pages(initial_response['count'])
 
-    (2..total_pages).each { |page| obtain_tickets_from_response(page) } if total_pages > 1
+    fetch_additional_tickets(total_pages) if total_pages > 1
 
-    ticket_master.tickets
+    self
   end
 
   private
 
-  def obtain_tickets_from_response(page = nil)
-    response = call_api(page)
+  def api_call(page = nil)
+    zendesk_api.get_request(:page => page)
+  end
 
-    ticket_master.collect_tickets(response['tickets'])
-
-    response
+  def collect_tickets(ticket_response)
+    ticket_master.collect_tickets(ticket_response)
   end
 
   def response_pages(response_count)
     (response_count / 100.00).ceil # maximum 100 tickets stored per page
   end
 
-  def call_api(page)
-    api.get_request(:page => page)
+  def fetch_additional_tickets(max_page)
+    (2..max_page).each { |page| collect_tickets(api_call(page)['tickets']) }
   end
 end

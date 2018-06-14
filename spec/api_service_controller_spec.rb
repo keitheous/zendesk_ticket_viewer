@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 RSpec.describe ApiServiceController do
-  let(:api)           { ZendeskApi.new }
+  let(:zendesk_api)   { ZendeskApi.new }
   let(:ticket_master) { TicketMaster.new }
-  let(:controller)    { ApiServiceController.new(ticket_master, api) }
+  let(:controller)    { ApiServiceController.new(zendesk_api, ticket_master) }
 
   describe '.initialize' do
     it 'sets ticket_master attr' do
@@ -12,7 +12,7 @@ RSpec.describe ApiServiceController do
     end
 
     it 'sets api attr' do
-      expect(controller.api.class).to eq(ZendeskApi)
+      expect(controller.zendesk_api.class).to eq(ZendeskApi)
     end
   end
 
