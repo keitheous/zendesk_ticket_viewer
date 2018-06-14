@@ -10,12 +10,12 @@ class Ticket
   end
 
   def to_s
-    puts [
+    [
       "Ticket #{id}",
       "Subject    : #{subject}",
       "Submitter  : #{submitter}",
       "Created    : #{created_at}",
       "Description:\n#{description}"
-    ].unshift("\n").join("\n")
+    ].join("\n")
   end
 end

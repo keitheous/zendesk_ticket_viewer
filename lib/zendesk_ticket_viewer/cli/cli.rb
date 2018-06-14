@@ -90,7 +90,11 @@ class Cli
   end
 
   def display_ticket(ticket_id)
-    tickets[ticket_id].to_s
+    puts available_ticket(tickets[ticket_id].to_s)
+  end
+
+  def available_ticket(ticket)
+    ticket.empty? ? "Ticket has disappeared. Pick another =)" : ticket
   end
 
   def exit_application
