@@ -46,13 +46,11 @@ PLATFORMS
 
 DEPENDENCIES
   httparty (~> 0.13.7)
+  json (~> 1.8.6)
   pry
   rake
   rspec
   rubocop (~> 0.39.0)
-
-RUBY VERSION
-   ruby 2.4.2p198
 
 BUNDLED WITH
    1.16.1

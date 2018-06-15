@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.4.2"
-
+gem 'json', '~> 1.8.6'
 gem 'rubocop', '~> 0.39.0'
 gem "rake"
 gem "rspec"
