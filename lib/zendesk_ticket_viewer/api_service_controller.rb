@@ -1,6 +1,5 @@
 require_relative 'zendesk_api'
 require_relative 'ticket_master'
-require 'pry'
 
 class ApiServiceController
   attr_reader :ticket_master, :zendesk_api

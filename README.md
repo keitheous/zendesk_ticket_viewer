@@ -1,40 +1,47 @@
 # Zendesk Ticket Viewer
+
+A Ticket Viewing App for Zendesk Tickets
+
 ## Getting Started
 
 ### Installation
 
 1. Install or update Homebrew.
-```
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-brew update
-```
+  ```
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-+ Optional: install Git if not installed `brew install git`
+  brew update
+  ```
 
+  - Optional: install Git if not installed with `brew install git`
 
 2. Install Rbenv and Ruby Build
-```
-brew install rbenv ruby-build
-```
+
+  ```
+  brew install rbenv ruby-build
+  ```
 
 3. Install Ruby version 2.4.2
-```
-rbenv install 2.4.2
-```
 
-4. Clone Repository & change into zendesk_ticket_viewer
-```
-git clone git@github.com:keitheous/zendesk_ticket_viewer.git
+  ```
+  rbenv install 2.4.2
+  ```
 
-cd zendesk_ticket_viewer
-```
+4. Clone Repository & change directory into zendesk_ticket_viewer
+
+  ```
+  git clone git@github.com:keitheous/zendesk_ticket_viewer.git
+
+  cd zendesk_ticket_viewer
+  ```
 
 5. Bundle install
-```
-bundle install
-```
-+ You might be required to `bundle update json` before bundle install
+  ```
+  bundle install
+  ```
+
+  - You might be required to `gem install bundler` before bundle install
 
 
 ### Rspec, Rubocop & Launching the App
@@ -58,8 +65,9 @@ rubocop
 
 1. Start the application by running `bundle exec rake` in console. Once the tickets have been successfully loaded. The main instructions will appear as below.
 
-![bundle exec rake](img/running_console.png)
-![main instructions](img/main_menu.png)
+    ![bundle exec rake](img/running_console.png)
+
+    ![main instructions](img/main_menu.png)
 
 2. Press `1` to view all tickets sectioned by page. In this view mode, you can press any number between 1 - _max_page_ to view page. There are only 25 tickets displayed per page.
 ![view all tickets by page](img/view_all_mode.png)
@@ -75,7 +83,15 @@ rubocop
 5. At any given time, when an invalid response is provided. The message below will appear.
 ![invalid response](img/invalid_response.png)
 
-## Coding Challenge Requirements
+6. The application also takes into consideration what happens when a ticket has been deleted and when there is no internet connection.
+
+    ![ticket missing](img/missing_ticket.png)
+
+    ![no internet connection](img/disconnection.png)
+
+
+
+## Objectives & Requirements
 Build a Ticket Viewer that will:
 1. Connect to the Zendesk API.
 2. Request all the tickets for your account.
@@ -104,20 +120,22 @@ invalid.
 6. Code demonstrates consistency and adherence to common standards.
 
 
+
 ## Discussions
 
 I have decided to create a CLI application instead of using a web-based framework (such as Rails or Sinatra) to produce a solution that is simple and lightweight. I am aware that the solution could have been written in one procedural script, however I wanted to take the opportunity to showcase some of the object oriented design skills I obtained in the past few months and just focus on Ruby and Rspec.
 
-Rspec tests are written cover some core functionalities and Rubocop is used to enforce style consistency. I have also decided to use HTTParty Gem to make API calls instead of Ruby's built in Net::HTTP class as it is much neater and cleaner to use.
+Rspec tests are written cover some core functionalities and Rubocop is used to enforce style consistency. I have also decided to use HTTParty Gem to make API calls instead of Ruby's built-in Net::HTTP class as it is much neater and cleaner to use.
+
 
 
 ### Classes & Responsibilities
 
-Classes were built separately, each with its own responsibility to address Separation of Concerns in this application.
+Classes were built separately, each with its own responsibility, to address Separation of Concerns in this application.
 
 No| Class               | Responsibility                                  
 --|:-------------------:|:-------------------------------------------------:
-1 | Ticket              | Represent a single ticket                         
+1 | Ticket              | Represent a single ticket object                         
 2 | TicketMaster        | Collects Tickets from API                          
 3 | ZendeskApi          | Make ZendeskAPI HTTP Request (with Authentication)
 4 | ApiServiceController| Executes the number of requests required to collect all tickets
@@ -127,7 +145,7 @@ No| Class               | Responsibility
 
 ### Object Oriented Design Decisions
 
-Diving into this coding challenge, I was aware of the importance of Object Oriented Design mainly because Ruby is an object oriented language and having good design means writing code that embraces the inevitable - change. Design makes code easier and cheaper to change, but also flexible, modular, reusable and understandable. Although I try to design my classes to be S.O.L.I.D, D.R.Y, loosely-coupled and highly cohesive, there are a few exceptions.
+Diving into this coding challenge, I was aware of the importance of Object Oriented Design mainly because Ruby is an object oriented language and having good design means writing code that embraces the inevitable - change. Design makes code easier and cheaper to change, but also flexible, modular, reusable and understandable. Although I try to design my classes to be S.O.L.I.D, D.R.Y, loosely-coupled and highly cohesive, there were a few exceptions.
 
 These exceptions exist due to the the scale and simplicity of this coding challenge. The questions that I ask myself are,
 > Is this implementation necessary?
@@ -144,34 +162,43 @@ Therefore, I try (to my best conscience) to not do that.
 
 Going along with the Single Responsibility Principle (SRP), the classes are built to just do its own thing, focus on that and do it well. I just need to be aware of the messages that are passed between these classes. I also use Dependency Injection and Composition to manage these interactions.
 
-##### How the Classes interact as a Unit
+#### How the Classes interact as a Unit
 
 ![classes overview](img/classes_overview.jpg)
 
-#### API Requests & Processing Tickets
+### API Requests & Processing Tickets
 
-One of the most interesting part when building this application was making the API Service decide on the number of API calls that are necessary and execute them to collect all the tickets to be displayed.
+One of the most interesting part when building this application was making the API Service Controller decide on the number of API calls that are required and execute them to collect all the tickets.
 
 Studying the structure of Zendesk API responses for Tickets, it is a Hash with four key-value pairs. The keys are,
+
 1. `response["tickets"]` which contains a maximum of 100 tickets,
+
 2. `response["next_page"]` which holds the url to the next page of tickets (next 100 tickets),
+
 3. `response["previous_page"]` which holds the url to the previous page of tickets (previous 100 tickets), and
+
 4. `response["count"]` which is an overall count of all tickets
 
 To elaborate further,
-1. In a scenario where there are 58 tickets **(condition: less or exactly 100 tickets)**, Only 1 API request is required because all 58 tickets can be found in the response (`response["tickets"]`). `response["next_page"]` and `response["previous_page"]` with both be _nil_.
+1. In a scenario where there are 58 tickets **(condition: less or exactly 100 tickets)**, Only 1 API request is required because all 58 tickets can be found in the response (`response["tickets"]`). `response["next_page"]` and `response["previous_page"]` is _nil_.
 
-2. In a scenario where there are 102 tickets **(condition: more than 100 tickets)**, 2 API requests is required because the first 100 tickets are contained within `response["tickets"]` of the first response. Making a request to `response["next_page"]` would return the remaining 2 tickets in `response["tickets"]`.
+2. In a scenario where there are 102 tickets **(condition: more than 100 tickets)**, 2 API requests are required because the first 100 tickets are contained within `response["tickets"]` of the first response. The last 2 tickets is within the `response["tickets"]` of `response["next_page"]`.
 
-3. 201 tickets would require 3 calls. Ticket 1-100 would be in the first call, 101 - 200 in the second, and 201 in the third.
+3. 201 tickets would require 3 calls.
+  + Ticket 1-100 would be in the first call,
+  + 101 - 200 in the second, and
+  + 201 in the third.
 
-##### Solution 1: Relying on 'next_page'
+#### Solution 1: Relying on 'next_page'
 
-A way automatically trigger API calls to retrieve all tickets would be to rely on the next_page key of the responses. Unless `response["next_page"]` is _nil_, keep requesting for `response["next_page"]` url. We then collect the tickets from each of these responses.
+A way automatically trigger API calls to retrieve all tickets would be to rely on the next_page key of the responses, as suggested by the [docs](https://develop.zendesk.com/hc/en-us/articles/360001068607#add).
+
+Unless `response["next_page"]` is _nil_, keep requesting for `response["next_page"]` url. We then collect the tickets from each of these responses.
 
 While this was a possible solution, it was not the best as we would only have a tunnelled vision of what is ahead (next page).
 
-##### Solution 2: using 'count' to determine total pages
+#### Solution 2: using 'count' to determine total pages
 
 `response["count"]` provides an overhead information of all tickets. We know that there can only be a maximum _100 tickets per page_. This was a crucial information that we can use to our advantage.
 
@@ -196,7 +223,7 @@ f(x) = (x / 100).ceil
 
 ```
 
-##### Calling API & Optimizing the call
+#### Calling API & Optimizing the call
 
 A decision on when to make the calls for tickets page can determine the speed of the User Interface.
 
@@ -210,7 +237,9 @@ Option B of course!
 
 To do this, it was important to assume that these tickets are somewhat static and no additional tickets are to be added into the collection WHILE a user is viewing. This was a safe assumption that I was able to clear with Ryan through Slack, Thanks Ryan!! =)
 
-Another challenging task was to optimize the API calls. I have identified that tickets count `res['count']` is the key to solving this challenge (Solution 2: using count for overhead view). I had an idea that if I could grab hold of this value first, my code would not be so repetitive. DRY. For days I kept asking myself
+Another challenging task was to optimize the API calls. I have identified that tickets count `res['count']` is the key to solving this challenge (Solution 2: using count for overhead view). I had an idea that if I could grab hold of this value first, my code would not be so repetitive. DRY.
+
+For days I kept asking myself
 
 > Which one comes first? The chicken or the egg?
 
@@ -240,7 +269,7 @@ Loop Pages, Additional API Call by loop, Collect tickets by loop  | Determine th
 ... |  Loop Pages, Additional API Call by loop, Collect tickets by loop
 
 
-Between Chicken and Egg, Identifying 'count' occurs much later in Chicken. Egg seems a whole lot DRYER than Chicken.
+Between Chicken and Egg, Identifying 'count' occurs much later in Chicken. Egg seems a whole lot DRYer than Chicken.
 
 Then it occurred to me. I have been thinking in and about loops, but I have failed to consider what if there is only 1 page? ~~Revelation!~~
 
@@ -252,3 +281,15 @@ Going with Chicken first, it is worth it to make one API call, collect the ticke
 With no additional pages -> total API count for Chicken is 1 Yasss! Fabulous!
 
 I chose chicken.
+
+
+
+## Future Improvements
++ Use VCR gem to record and replay test suite's HTTP interactions
++ Use better method and class names
++ Train the brain to think object oriented
++ Write better tests and exception handling
+
+
+---
+###### Thank you for the coding challenge, I truely enjoyed it =)
