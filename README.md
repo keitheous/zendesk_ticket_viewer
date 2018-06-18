@@ -6,15 +6,13 @@ A Ticket Viewing App for Zendesk Tickets
 
 ### Installation
 
-1. Install or update Homebrew.
+1. Install Homebrew
 
   ```
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-  brew update
   ```
 
-  - Optional: install Git if not installed with `brew install git`
+  - Or Update: `brew update`
 
 2. Install Rbenv and Ruby Build
 
@@ -22,11 +20,16 @@ A Ticket Viewing App for Zendesk Tickets
   brew install rbenv ruby-build
   ```
 
+  - Or Re-install: `brew reinstall rbenv ruby-build`
+  - Optional: Install Git if not installed with `brew install git`
+
 3. Install Ruby version 2.4.2
 
   ```
   rbenv install 2.4.2
   ```
+
+  - or [change ruby version](https://makandracards.com/makandra/21545-rbenv-how-to-switch-to-another-ruby-version-temporarily-per-project-or-globally)
 
 4. Clone Repository & change directory into zendesk_ticket_viewer
 
@@ -41,7 +44,7 @@ A Ticket Viewing App for Zendesk Tickets
   bundle install
   ```
 
-  - You might be required to `gem install bundler` before bundle install
+  - You might be required to install bundler gem with `gem install bundler` prior to bundle install
 
 
 ### Rspec, Rubocop & Launching the App
@@ -66,22 +69,25 @@ rubocop
 1. Start the application by running `bundle exec rake` in console. Once the tickets have been successfully loaded. The main instructions will appear as below.
 
     ![bundle exec rake](img/running_console.png)
-
     ![main instructions](img/main_menu.png)
 
 2. Press `1` to view all tickets sectioned by page. In this view mode, you can press any number between 1 - _max_page_ to view page. There are only 25 tickets displayed per page.
-![view all tickets by page](img/view_all_mode.png)
-![viewing page 4](img/viewing_tickets_by_page.png)
+
+    ![view all tickets by page](img/view_all_mode.png)
+    ![viewing page 4](img/viewing_tickets_by_page.png)
 
 3. However, if you had selected `2` to view an individual ticket by ID, the menu would be as below. In this view mode, you can press any number (between 1 - _max_ticket_id_) to view ticket.
-![view single ticket by ticket id](img/view_single_ticket_mode.png)
-![viewing ticket id 4](img/view_ticket_by_id.png)
 
-4. When you are in both view modes (all and individual), pressing `e` will bring you back to the main menu. On the other hand, pressing `e`  while you are in the main menu will close the application.
-![closing application](img/goodbye_message.png)
+    ![view single ticket by ticket id](img/view_single_ticket_mode.png)
+    ![viewing ticket id 4](img/view_ticket_by_id.png)
+
+4. When you are in both view modes (all and individual), pressing `e` will bring you back to the main menu. Pressing `e` while you are in the main menu, on the other hand, will close the application.
+
+    ![closing application](img/goodbye_message.png)
 
 5. At any given time, when an invalid response is provided. The message below will appear.
-![invalid response](img/invalid_response.png)
+
+    ![invalid response](img/invalid_response.png)
 
 6. The application also takes into consideration what happens when a ticket has been deleted and when there is no internet connection.
 
@@ -123,9 +129,9 @@ invalid.
 
 ## Discussions
 
-I have decided to create a CLI application instead of using a web-based framework (such as Rails or Sinatra) to produce a solution that is simple and lightweight. I am aware that the solution could have been written in one procedural script, however I wanted to take the opportunity to showcase some of the object oriented design skills I obtained in the past few months and just focus on Ruby and Rspec.
+I have decided to create a CLI application instead of using a web-based framework (such as Rails or Sinatra) to produce a solution that is simple and lightweight. I am aware that the solution could have been written in one procedural script, however I wanted to take the opportunity to showcase some of the object oriented design skills that I obtained in the past few months and just focus on Ruby and Rspec.
 
-Rspec tests are written cover some core functionalities and Rubocop is used to enforce style consistency. I have also decided to use HTTParty Gem to make API calls instead of Ruby's built-in Net::HTTP class as it is much neater and cleaner to use.
+I have written some Rspec tests to cover core functionalities and used Rubocop to enforce style consistency. I have also decided to use HTTParty Gem to make API calls instead of Ruby's built-in Net::HTTP class as it is much neater and cleaner to use.
 
 
 
@@ -145,7 +151,7 @@ No| Class               | Responsibility
 
 ### Object Oriented Design Decisions
 
-Diving into this coding challenge, I was aware of the importance of Object Oriented Design mainly because Ruby is an object oriented language and having good design means writing code that embraces the inevitable - change. Design makes code easier and cheaper to change, but also flexible, modular, reusable and understandable. Although I try to design my classes to be S.O.L.I.D, D.R.Y, loosely-coupled and highly cohesive, there were a few exceptions.
+Diving into this coding challenge, I was aware of the importance of Object Oriented Design mainly because Ruby is an object oriented language and having good design means writing code that embraces the inevitable - change. Design not only makes code easier and cheaper to change, but also flexible, modular, reusable and understandable. Although I try to design my classes to be S.O.L.I.D, D.R.Y, loosely-coupled and highly cohesive, there were a few exceptions.
 
 These exceptions exist due to the the scale and simplicity of this coding challenge. The questions that I ask myself are,
 > Is this implementation necessary?
@@ -154,13 +160,13 @@ These exceptions exist due to the the scale and simplicity of this coding challe
 
 > How can this code be reused or changed in the future? ~~I wish I was psychic.~~
 
-There is also a fear of over-designing. Here's what Sandi Metz has to say about programmers who over-design.
+There is also the fear of over-designing. Here is what Sandi Metz has to say about programmers who over-design.
 
 > In an excess of enthusiasm, (we) apply principles inappropriately and see patterns where none exist. (we) construct complicated, beautiful castles of code and then are distressed to find (our)selves hemmed in by stone walls.
 
 Therefore, I try (to my best conscience) to not do that.
 
-Going along with the Single Responsibility Principle (SRP), the classes are built to just do its own thing, focus on that and do it well. I just need to be aware of the messages that are passed between these classes. I also use Dependency Injection and Composition to manage these interactions.
+Going along with the Single Responsibility Principle (SRP), the classes were built to just do one thing, focus on that and do it well. I just need to be aware of the messages that are passed between these classes. I also use Dependency Injection and Composition to manage these interactions.
 
 #### How the Classes interact as a Unit
 
@@ -192,93 +198,93 @@ To elaborate further,
 
 #### Solution 1: Relying on 'next_page'
 
-A way automatically trigger API calls to retrieve all tickets would be to rely on the next_page key of the responses, as suggested by the [docs](https://develop.zendesk.com/hc/en-us/articles/360001068607#add).
+A solution to trigger API calls in order to retrieve all tickets was to rely on the next_page key of the responses, as suggested by the [docs](https://develop.zendesk.com/hc/en-us/articles/360001068607#add).
 
-Unless `response["next_page"]` is _nil_, keep requesting for `response["next_page"]` url. We then collect the tickets from each of these responses.
+Unless `response["next_page"]` is _nil_, keep requesting for `response["next_page"]` url. On every request, collect tickets.
 
 While this was a possible solution, it was not the best as we would only have a tunnelled vision of what is ahead (next page).
 
 #### Solution 2: using 'count' to determine total pages
 
-`response["count"]` provides an overhead information of all tickets. We know that there can only be a maximum _100 tickets per page_. This was a crucial information that we can use to our advantage.
+`response["count"]` was another thing we could use. We know that there can only be a maximum _100 tickets per page_. Combining this two information, we have an advantage.
 
-Say if we have _201 tickets_, how many calls do we need to make to cover all 201 tickets?
+Say if we have _201 tickets_, we needed 3 calls to collect all existing ticket because a single API page can contain 100 tickets. We just need a formula to use.
 
-Dividing 201 tickets with 100 would return 2.01. Using a `.ceil` method on this would round *up* this figure, resulting in the number of total pages and necessary API calls.
+Dividing 201 tickets with 100.00 would return 2.01. Using a `.ceil` method on this would round *up* this figure, resulting in the number of total pages and necessary API calls.
 
-```
-Scenario 1: 201 Tickets to retrieve
-201 tickets / 100.00 max tickets = 2.01
-(2.01).ceil = 3 = 3 pages = 3 API calls (total)
-
-
-Scenario 2: 58 Tickets to retrieve
-58 tickets / 100.00 max tickets = 0.58
-(0.58).ceil = 1 = 1 page = 1 API call
+    Scenario 1: 201 Tickets to retrieve
+    201 tickets / 100.00 max tickets = 2.01
+    (2.01).ceil = 3 = 3 pages = 3 API calls (total)
 
 
-Formula = (max_ticket_count / max_ticket_per_page).ceil
+    Scenario 2: 58 Tickets to retrieve
+    58 tickets / 100.00 max tickets = 0.58
+    (0.58).ceil = 1 = 1 page = 1 API call
 
-f(x) = (x / 100).ceil
 
-```
+    Formula = (max_ticket_count / max_ticket_per_page).ceil
 
-#### Calling API & Optimizing the call
+    f(x) = (x / 100).ceil
 
-A decision on when to make the calls for tickets page can determine the speed of the User Interface.
 
-> Option A : Do we make an API request for next page whenever the user clicks on next page?
+#### Optimization
+
+A decision on when to make the calls for tickets page, can determine the speed of the User Interface.
+
+> Option A : Do we make an API request for next page whenever the user clicks on next page? (Web Based)
 
 *OR*
 
 > Option B : Do we request for all the tickets once in the beginning, cache the data, then render the pages according to what the user wants?
 
-Option B of course!
+Option B of course! However, it might be worth considering a different approach when dealing with thousands of tickets as caching them might not be the best solution. Since we are dealing with less and using CLI, Option B might be a good approach for now.
 
-To do this, it was important to assume that these tickets are somewhat static and no additional tickets are to be added into the collection WHILE a user is viewing. This was a safe assumption that I was able to clear with Ryan through Slack, Thanks Ryan!! =)
+It was also important to assume that these tickets are somewhat static and no additional tickets are to be added into the collection WHILE a user is viewing, otherwise we will need to build a system to synchronise with real time data. This was a safe assumption that I was able to clear with Ryan through Slack, Thanks Ryan!! =)
 
-Another challenging task was to optimize the API calls. I have identified that tickets count `res['count']` is the key to solving this challenge (Solution 2: using count for overhead view). I had an idea that if I could grab hold of this value first, my code would not be so repetitive. DRY.
-
-For days I kept asking myself
+To optimize the system further, I had an idea that if I could grab hold of tickets count (`res['count']` value) first, then perhaps my code would not be so repetitive. For days I kept asking myself,
 
 > Which one comes first? The chicken or the egg?
 
-Egg first:
-+ Should I grab the *count* first via an initial API call then collect the tickets by page?
+Egg first approach:
+
++ Definition: Grab the *count* first via an initial API call to determine pages, then collect the tickets by page consecutively using a loop.
+
++ PRO: DRY code
 
 + CON: **a waste of initial api call, might as well collect the tickets of page one**
 
-+ STEPS: API CALL > COUNT > START LOOP > API CALL PAGE 1 > COLLECT TICKETS PAGE 1 > API CALL PAGE 2 > COLLECT TICK...
++ STEPS: API CALL > DETERMINE PAGES VIA COUNT > START LOOP > API CALL PAGE 1 & COLLECT TICKETS PAGE 1 > API CALL PAGE 2 & COLLECT TICKETS PAGE 2 > API CALL PAGE 3 & COLLECT TICKETS PAGE 3 > ...
 
-Chicken first:
+Chicken first approach:
 
-* Should I do an initial API call, collect the tickets of page one, grab the *count*, then collect tickets of other pages?
+* Definition: Do an initial API call, collect the tickets of page one and grab the *count* to determine pages, consecutively, call again & collect tickets of other pages using a loop.
 
-* CON: **there is api call AND tickets collection - before AND after identifying count**.
+* PRO: _check below (what if there is only one page?)_
 
-* STEPS: API CALL > COLLECT TICKETS PAGE 1 > COUNT > START LOOP > API CALL PAGE 2 > COLLECT TICKETS PAGE 2 > API CALL PAGE 3 > COLLECT TICK...
+* CON: **there is api call AND tickets collection - before AND after identifying pages via count**.
 
-Pseudocode
+* STEPS: API CALL > COLLECT TICKETS PAGE 1 > COUNT > START LOOP > API CALL PAGE 2 & COLLECT TICKETS PAGE 2 > API CALL PAGE 3 & COLLECT TICKETS PAGE 3 > ...
+
+Pseudocode:
 
 Egg                                    | Chicken
 ---------------------------------------|:-------
 Initial API Call                       | Initial Api Call
-Get the Count                          | Collect Tickets Page
-Determine the pages from Count         | Get the Count
-Loop Pages, Additional API Call by loop, Collect tickets by loop  | Determine the pages from Count
-... |  Loop Pages, Additional API Call by loop, Collect tickets by loop
+*Identifying pages from Count*         | Collect tickets   <--- *
+Loop Pages - Call API, Collect tickets | *Identifying pages*
+--                                     |  Loop Pages - Call API, Collect tickets <--- *
 
+the * indicate repetition
 
-Between Chicken and Egg, Identifying 'count' occurs much later in Chicken. Egg seems a whole lot DRYer than Chicken.
+Between Chicken and Egg, Identifying pages via 'count' occurs much later in Chicken. Egg seems a whole lot DRYer than Chicken.
 
-Then it occurred to me. I have been thinking in and about loops, but I have failed to consider what if there is only 1 page? ~~Revelation!~~
+*what if there is only one page?*
 
-Going with Egg first, is it worth it to make an API call for page one just to obtain Count? then make the same API call to collect the tickets? No.
+A few days later, it occurred to me that I have been thinking in and about loops, but I have forgotten to consider what if there is only 1 page? ~~Revelation!~~
 
-With no additional pages -> total API count for Egg is 2
+Going with the Egg first approach, If there is only one page of tickets, making TWO API calls (first for count, second for tickets) would have been unnecessary.
 
-Going with Chicken first, it is worth it to make one API call, collect the tickets and identify count? Maybe.
-With no additional pages -> total API count for Chicken is 1 Yasss! Fabulous!
+Going with the Chicken first approach, If there is only one page of tickets, making ONE API call, to grab tickets & evaluate count would have been worth it. Yasss! Fabulous!
 
 I chose chicken.
 
